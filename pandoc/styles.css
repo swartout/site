@@ -1,0 +1,54 @@
+body {
+    font-family: 'Roboto Mono', monospace;
+    max-width: 80ch;
+    margin: 0 auto;
+    background-color: white;
+    padding: 1em;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+code {
+    background-color: #f4f4f4;
+    display: inline-block;
+}
+
+a {
+    color: inherit;
+}
+
+#title {
+  text-decoration: none;
+}
+
+#title:visited {
+  color: inherit;
+}
+
+img {
+    max-width: 100%;
+}
+.small-img {
+    max-width: 200px;
+    height: auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    margin-right: auto;
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+
+.header-right {
+    margin-left: auto;
+}
+
+.header-right a {
+    margin-left: 1em;
+}
