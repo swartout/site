@@ -20,3 +20,4 @@ title: Notes
 
 [**Hyak**](/notes/hyak.html)
 
+[**Spinning Up**](/notes/spinningup.html)
