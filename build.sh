@@ -7,7 +7,7 @@
 out="out"
 
 # the directories to generate from
-directories="root posts"
+directories="root posts notes"
 
 # directory for static assets
 static="static"

@@ -1,0 +1,118 @@
+---
+title: Hyak
+---
+
+# Hyak
+
+- To use Hyak, you need to have have an account in a group with access
+    - UW students (me) can get one by being part of the RCC RSO
+- To SSH into `klone`, you `ssh UWNetID@klone.hyak.uw.edu`
+    - You'll be prompted with a password auth and 2-factor
+    - Do *not* do strenuous tasks on the login node, nothing more than text editing or file management
+- Once in the login node, you might need a ssh key to access certain jobs:
+    - Use `ssh-keygen -C klone -t rsa -b 2048 -f ~/.ssh/id_rsa -q -N ""` to create the key
+    - View the [docs](https://hyak.uw.edu/docs/setup/intracluster-keys) on how to authorize the keys
+- Port forwarding:
+    - Use a command like: `ssh klone.hyak.uw.edu -L PORT:HOSTNAME:PORT`
+    - To get the hostname, use the aptly named `hostname` command
+- It is also possible to do X11 forwarding, see docs for details
+- Each cluster has physically separate memory which is mounted onto each compute node
+- 3-2-1 Backup Policy:
+    - 3 copies of your data
+    - 2 different types of storage media
+    - 1 copy off-site
+- Storage mounted on `klone` or `mox` are referred to as `gscratch`
+    - This is because of the memory directory name, `/gscratch/foldername/filename`
+- Each user has a 10 GB home directory
+    - Some have lab dedicated storage as well
+- There are two storage quotas, *block* and *inode*
+    - Block is typical GB limit
+    - Inode is a maximum amount of files
+- The `hyakstorage` command on `klone` quickly shows utilization
+- `/gscratch/scrubbed` is free and *kinda* unlimited, but files are deleted after 21 days
+    - As everything is public on `scrubbed` it is important to set proper file permissions
+- LOLO is UW's tape data archive solution, not necessary for me but neat
+- There are some common datasets under `/gscratch/data`
+- To allocate resources to everyone, a scheduler is necessary to create user processes or "jobs"
+    - This is done using `SLURM`, "Simple Linux Utility for Resource Management"
+    - As such, online documentation will often suffice
+- SLURM has two important concepts:
+    - Accounts:
+        - These are what you are able to submit jobs to using `hyakalloc`
+        - Resources are what the group provides
+    - Partitions:
+        - Each partition is a class of node, there is a standard `compute` as well as GPU or high-memory nodes
+        - `sinfo` gives all the possible partitions
+- Job Types:
+    - Interactive:
+        - These are interactive sessions
+    - Batch:
+        - These are unattended, typically once-off jobs which emails you when completed
+    - Recurring:
+        - These are cron-like jobs which reoccur
+- SLURM flags:
+    - Account: `--account`
+        - What account you are part of (RCC for me), can find using `groups`
+    - Partition: `--partition`
+        - What partition do you want to use? `sinfo` gives the possible ones
+    - Nodes: `--nodes`
+        - How many nodes do you want? (Typically one, esp for me)
+    - Cores: `--cpus-per-task`
+        - How many cores do you need?
+    - Memory: `--mem`
+        - How much memory do I need?
+        - Given in format `size[units]`, units are `M`, `G`, or `T`
+    - Time: `--time`
+        - How long do I need the job for?
+        - Format is: `hours:minutes:seconds`, `days-hours`, or `minutes`
+- To start an interactive job use: `salloc`
+    - This will dump you in an interactive shell
+    - Example single-node interactive job: `salloc -A mylab -p compute -N 1 -c 4 --mem=10G --time=2:30:00`
+- Multi-node interactive jobs are more involved, see docs if necessary
+- If the group has an interactive node, you can use `-p <partition_name>-int`
+    - You can check if you have one using `hyakalloc`
+- To submit batch jobs (on `mox`), you need to call `sbatch` on a `<script_name>.slurm` file
+    - See docs for a template
+- Utilities:
+    - `sinfo` to view (`mox`) partitions
+        - Add `-p <group_name>` to see group partitions
+    - `squeue` to view information about jobs in the queue
+    - `scancle` cancels jobs, can either use job ID or NetID
+    - `sstat` shows status information about a job
+    - `sacct` displays info about completed jobs
+    - `sreport` creates reports about previous usage
+- You have on-demand access to your group's resources
+- You can request resources from the checkpoint partition, `ckpt`
+    - Requests from the cluster's idle resources
+    - This can even have GPUs!
+    - Checkpoint jobs are stopped and re-queued every 4 hours
+    - They might be stopped without any notice
+    - This means that jobs should be able to stop and resume on demand
+- For Jupyter Notebooks, select a random port number between 4096 and 16384
+    - Set the flag `--ip 0.0.0.0`
+    - Make another ssh session and port-forward in
+- We can view the available modules for software using `module avail`
+    - This *cannot* be done from a login node
+- `module` commands:
+    - `module avail`
+    - `module list`
+    - `module load <software>`
+    - `module unload <software>`
+    - `module purge` (unload all software)
+- These modules are from "Lmod" and "Environment Modules"
+- **Apptainer** is the preferred container for `klone`
+    - They are only one file, preventing inode problems common with conda!
+- To create an Apptainer:
+    1. Start an interactive session
+    2. Load the apptainer module `module load apptainer`
+    3. Create definition file: see documentation
+    4. Build the apptainer container from the definition file
+    5. Run the apptainer binary: `apptainer exec <container> <command>`
+- In practice, we can typically use pre-built containers    
+- Common container app stores:
+    - Sylabs.io Cloud Library
+    - Docker Hub
+    - Biocontainers.pro
+    - Nvidia GPU Cloud (NGC)
+- Modules can also be loaded using apptainer
+- From what I understand, venv is okay to use instead of (mini)conda

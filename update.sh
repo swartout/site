@@ -7,4 +7,4 @@ cd "$(dirname "$0")"
 git pull
 
 # generate files
-./generate.sh
+./build.sh
