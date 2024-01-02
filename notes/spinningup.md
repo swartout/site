@@ -131,3 +131,42 @@ rewards, called the return.
 The goal of RL is to maximize the expected return over a trajectory from agent
 actions given by a policy. This can be expressed as finding the optimal policy,
 $\pi^*$, where $\pi^* = \arg \max_\pi J(\pi)$
+
+## [Part 2](https://spinningup.openai.com/en/latest/spinningup/rl_intro2.html)
+
+### Model-Based RL
+
+One of the biggest differentiators in RL is if the algorithm models the
+environement.
+
+- Model-based RL can either learn or be given a model which predicts state
+transitions and rewards
+- This is advantageous because it allows the agent to
+search and plan ahead
+- These models can either be learned or given:
+- **Learned models:**
+    - Learning a model can be difficult, due to bias the agent being able to
+      exploit the biases in the model
+- **Given models:**
+    - This is common for games, such as go or chess
+
+### What to Learn
+
+- **Explicit Policies:**
+    - They learn a function $\pi_\theta(a|s)$
+    - Optimization is (almost) always on-policy (must use data collected from
+      the most recent version of the policy)
+    - Often need to learn approximator for the value function $V^\pi(s)$
+    - A2C, PPO do this
+- **Q-Learning:**
+    - Learn a Q-function by satisfying the Bellman equation
+    - Off-policy, can use old data
+    - Actions are decided via the action which has the highest value for the
+      Q-function
+    - Deep-Q-networks use this!
+- **Model-based:**
+    - Pure planning involves not representing the policy, instead use search to
+      select best actions
+    - Expert iteration involves search along with a policy, which generates
+      possible actions to search from
+
