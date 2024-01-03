@@ -6,6 +6,10 @@ title: Notes
 
 ---
 
+[**CSE 447 (NLP)**](/notes/cse447.md)
+
+[**CSE 473 (AI)**](/notes/cse473.md)
+
 [**CSE 312**](/notes/cse312.html)
 
 [**CSE 332**](/notes/cse332.html)
