@@ -6,6 +6,8 @@ title: Notes
 
 ---
 
+[**CSE 422 (Modern Algos)**](/notes/cse422.html)
+
 [**CSE 447 (NLP)**](/notes/cse447.html)
 
 [**CSE 473 (AI)**](/notes/cse473.html)
