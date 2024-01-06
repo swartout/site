@@ -170,3 +170,74 @@ search and plan ahead
     - Expert iteration involves search along with a policy, which generates
       possible actions to search from
 
+## [Part 3](https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html)
+
+**Deriving policy gradients**
+
+*Five helpful facts*
+
+1. Prob of trajectory: $$P(\tau | \theta) = \rho_0(s_0) \prod_{t=0}^T P(s_{t+1}
+   | s_t, a_t) \pi_\theta(a_t | s_t)$$
+2. Log-derivative trick: $$\nabla_\theta P(\tau | \theta) = P(\tau | \theta)
+   \nabla_\theta \log P(\tau | \theta)$$
+3. Log-prob of a trajectory: $$\log P(\tau | \theta) = \log \rho_0(s_0) +
+   \sum_{t=0}^T [\log P(s_{t+1} | s_t, a_t) + \log \pi_\theta(a_t | s_t)]$$
+4. Gradients of env functions: $$\rho_0(s_0) = P(s_{t+1} | s_t, a_t) = R(\tau)
+   = 0$$
+5. Grad-log-prob of trajectory: $$\nabla_\theta \log P(\tau | \theta) =
+   \sum_{t=1}^T \nabla_\theta \log \pi_\theta(a_t | s_t)$$
+
+**Basic policy gradient:**
+
+$$\nabla_\theta J(\pi_\theta) = \mathbb{E}_{\tau \sim \pi_\theta}[\sum_{t=0}^T
+\nabla_\theta \log \pi_\theta(a_t | s_t) R(\tau)]$$
+
+It can be estimated via: $\nabla_\theta J(\pi_\theta) \sim \frac{1}{|D|}
+\sum_{\tau \in D} \sum_{t=0}^T \nabla_\theta \log \pi_\theta (a_t | s_t)
+R(\tau)$
+
+*"Expected Grad-Log-Prob Lemma":*
+
+$$\mathbb{E}_{x \sim P_\theta}[\nabla_\theta \log P_\theta(x)] = 0$$
+
+The simple gradient includes rewards earned before the action was taken, which
+doesn't make sense. We can equivalently express the gradient as:
+
+$$\nabla_\theta J(\pi_\theta) = \mathbb{E}_{\tau \sim \pi_\theta}[\sum_{t=0}^T
+\nabla_\theta \log \pi_\theta (a_t | s_t) \sum_{t' = t}^T R(s_{t'}, a_{t'},
+s_{t'+1})]$$
+
+The "reward-to-go" is $\hat{R}_t = \sum_{t'=t}^T R(s_{t'}, a_{t'}, s_{t'+1})$
+
+Because of EGLP, we can multiply by functions $b(s_t)$ which only depend on
+state:
+
+$$\mathbb{E}_{a_t \sim \pi_\theta}[\nabla_\theta \log \pi_\theta(a_t | s_t)
+b(s_t)] = 0$$
+
+Therefore, we can add or subtract terms from the "reward" part of the policy
+gradient without changing the expectation. We can subtract (our prediction of)
+the value function from the reward ($b(s_t) = V^\pi(s_t)$).
+
+As we don't actually know $V^\pi(s_t)$, we will typically estimate it via
+another neural network. The neural network typically minimizes a mean-squared
+loss function:
+
+$$V_\phi = \arg \min_{V_\phi} \mathbb{E}_{s_t, \hat{R}_t, \sim
+\pi_k}[(V_\phi(s_t) - \hat{R}_t)^2]$$
+
+Note that the states and rewards are from the current epoch, $k$.
+
+The *general form* of the policy gradient is:
+
+$$\nabla_\theta J(\pi_\theta) = \mathbb{E}_{\tau \sim \pi_\theta}[\sum_{t=0}^T
+\nabla_\theta \log \pi_\theta(a_t | s_t) \Phi_t]$$
+
+$\Phi_t$ can be any of the following and still have the same expectation:
+
+- $\Phi_t = R(\tau)$
+- $\Phi_t = \sum_{t'=t}^T R(s_{t'}, a_{t'}, s_{t'+1})$
+- $\Phi_t = \sum_{t'=t}^T R(s_{t'}, a_{t'}, s_{t'+1}) - b(s_t)$
+- $\Phi_t = Q^{\pi_\theta}(s_t, a_t)$: (on-policy action-value function)
+- $\Phi_t = A^{\ph_\theta}(s_t, a_t)$: (advantage function)
+
