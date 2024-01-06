@@ -239,5 +239,5 @@ $\Phi_t$ can be any of the following and still have the same expectation:
 - $\Phi_t = \sum_{t'=t}^T R(s_{t'}, a_{t'}, s_{t'+1})$
 - $\Phi_t = \sum_{t'=t}^T R(s_{t'}, a_{t'}, s_{t'+1}) - b(s_t)$
 - $\Phi_t = Q^{\pi_\theta}(s_t, a_t)$: (on-policy action-value function)
-- $\Phi_t = A^{\ph_\theta}(s_t, a_t)$: (advantage function)
+- $\Phi_t = A^{\pi_\theta}(s_t, a_t)$: (advantage function)
 
