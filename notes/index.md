@@ -12,6 +12,8 @@ title: Notes
 
 [**CSE 473 (AI)**](/notes/cse473.html)
 
+[**ENTRE 459 (Venture Investing)**](/notes/entre459.html)
+
 [**CSE 312**](/notes/cse312.html)
 
 [**CSE 332**](/notes/cse332.html)
