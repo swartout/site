@@ -241,3 +241,18 @@ $\Phi_t$ can be any of the following and still have the same expectation:
 - $\Phi_t = Q^{\pi_\theta}(s_t, a_t)$: (on-policy action-value function)
 - $\Phi_t = A^{\pi_\theta}(s_t, a_t)$: (advantage function)
 
+---
+
+## [Vanilla Policy Gradient](https://spinningup.openai.com/en/latest/algorithms/vpg.html)
+
+- VPG uses the basic policy gradient to push up the probabilities of good
+  actions using an advantage function
+- VPG is **on-policy**
+- VPG has a stochastic policy
+- Policy gradient: $$\nabla_\theta J(\pi_\theta) = \mathbb{E}_{\tau \sim
+  \pi_\theta}[\sum_{t=0}^T \nabla_\theta \log \pi_\theta(a_t | s_t)
+  A^{\pi_\theta}(s_t, a_t)]$$
+- Policy update: $$\theta_{k+1} = \theta_k + \alpha \nabla_\theta
+  J(\pi_{\theta_k})$$
+- Exploration happens via randomness in stochastic policy
+
