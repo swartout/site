@@ -1,18 +1,7 @@
-# [Carter Swartout personal website](https://cswartout.com)
-
-## About
-
-Hold the content and static generation materials of my website.
-
-## Usage
-
-- `generate.sh` generates all of the website files.
-- `update.sh` pulls updates from git and regenerates files.
-
-## TODOs
-
-- TODO: automated posts (or notes) index page
-- TODO: notes
-- TODO: logging
-- TODO: better code support
-- TODO: date metadata
+[```
+                   _              _            _  _        
+                  | |            ( )          (_)| |       
+  ___  __ _  _ __ | |_  ___  _ __|/ ___   ___  _ | |_  ___ 
+ / __|/ _` || '__|| __|/ _ \| '__| / __| / __|| || __|/ _ \
+| (__| (_| || |   | |_|  __/| |    \__ \ \__ \| || |_|  __/
+ \___|\__,_||_|    \__|\___||_|    |___/ |___/|_| \__|\___|```](https://cswartout.com)
