@@ -45,7 +45,7 @@ title: ENTRE 459 (Venture Investing)
     - Managing Partners:
         - Manage organization as well as money
     - Venture partners:
-        - Help with sourcing and evaluating funds
+        - Help with sourcing and evaluating investments
 - How do VC funds generate return?
     - To breakeven at 10% success, they need to return 10x
     - To get 3x return on fund, companies need a 30x return
@@ -56,3 +56,46 @@ title: ENTRE 459 (Venture Investing)
     - Different areas of investment
     - Different fund parameters (e.g. timing or size)
     - Competitive edge: what do I have that makes companies want to work with me?
+
+---
+
+## Lecture 3 - Jan 11
+
+- Quick assesment of an opportunity:
+    - What is this?
+    - Why should I pay attention?
+    - *Not* should I invest in this company?
+- Venture funds are full of bias
+- Naming a company:
+    - Is it taken?
+    - Is there a website?
+    - Any trademark issues?
+- Age of a company:
+    - Date of incorporation
+    - Has it raised capital?
+    - Is it generating revenue/profit?
+- Company stages:
+    - Early stage: has revenue
+        1. Pre-seed
+        2. Seed
+        3. Series A
+    - Late state: has valuation
+        1. Series B
+        2. Series C
+        3. Series D
+        4. Series E
+    - Public:
+        - IPO
+- Where are companies?
+    - Where was it incorporated? (often Delware)
+    - Where are the founders?
+    - Where are the customers?
+- Who is building the company?
+    - Are they qualified?
+    - Can they get and retain talent?
+    - Can they communicate?
+- Considerations for pitching:
+    - What are three things...
+        - people should remember about the company?
+        - you want in the investment memo?
+        - you want to be talked about in the investment committee meeting?
