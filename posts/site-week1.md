@@ -1,12 +1,9 @@
 ---
-title: My Website! (Week 1)
+title: My Website!
 ---
 
-# How my website and blog works! (Week 1)
+# How my website and blog works!
 
-I made a New Year's resolution to write a blog post a week, and while I'm a bit
-late, here's the first post! This isn't as long or in depth as I'd like, but I'm
-trying to chip away at perfectionism by always getting something out.
 
 I've always a little piece of the internet that's mine - and if I'm going to
 write more here, I'd love for it to be on something I created. Until recently,
