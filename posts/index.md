@@ -6,7 +6,7 @@ title: Posts
 
 ---
 
-[**How my website and blog works! (Week 1)**](/posts/site-week1.html)
+[**How my website and blog works!**](/posts/site-week1.html)
 
 [**An Intuitive Explanation of GPT Models - Part 1**](/posts/gpt1.html)
 
