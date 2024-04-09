@@ -18,7 +18,7 @@ title: Notes
 
 [**CSE 447 (NLP)**](/notes/cse447.html)
 
-[**CSE 455 (Computer Vision)](/notes/cse455.html)
+[**CSE 455 (Computer Vision)**](/notes/cse455.html)
 
 [**CSE 473 (AI)**](/notes/cse473.html)
 
