@@ -22,6 +22,8 @@ title: Notes
 
 [**CSE 473 (AI)**](/notes/cse473.html)
 
+[**CSE 478 (Autonomous Robotics)**](/notes/cse478.html)
+
 [**CSE 493**](/notes/cse493.html)
 
 [**Terminal**](/notes/terminal.html)
