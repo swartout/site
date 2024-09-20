@@ -6,7 +6,7 @@ title: Hugging Face Tutorial
 
 This is a tutorial I wrote for my club, I2. I figured it might be able to help
 some people out! Thanks for reading! (You can download the original .ipynb
-notebook [here](/static/hf-tutorial.ipynb).)
+notebook [here](/static/hf-tutorial.ipynb) and a Colab version [here](https://colab.research.google.com/drive/1FhfRpjAcR5UqQROFLeKputPfVzGJh23g?usp=sharing).)
 
 \- Carter Swartout, I2
 
