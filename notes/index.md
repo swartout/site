@@ -28,6 +28,8 @@ title: Notes
 
 [**COM 234**](/notes/com234.html)
 
+[**EDUC 221**](/notes/educ221.html)
+
 [**Terminal**](/notes/terminal.html)
 
 [**Hyak**](/notes/hyak.html)
