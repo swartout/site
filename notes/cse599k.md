@@ -18,7 +18,7 @@ title: CSE 599K
 - Attention is memory bound, wheras linear layers are compute bound
     - Due to attention having lower "arithmetic density"
 - Because decoding is only multiplying by a linear layer (GEMV), it is also memory-bound
-- Execution time heuristic: $S \cdot  \frac{2 \cdot n_{\text{params}}}{\text{FLOPS}} + G \cdot \frac{2 \cdot n_{\text{params}}}{\text{MBW}}$
+- Execution time heuristic: $2 \cdot S \cdot \frac{n_{\text{params}}}{\text{FLOPS}} + 2 \cdot G \cdot \frac{n_{\text{params}}}{\text{MBW}}$
     - $S$: prefill length
     - $G$: generated length
 - Useful SLOs:
