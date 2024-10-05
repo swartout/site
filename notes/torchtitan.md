@@ -10,19 +10,19 @@ Repo tree (as of [Sept 19](https://github.com/pytorch/torchtitan/tree/d2a4904f58
 
 ```
 .
-├── [ ] CODE_OF_CONDUCT.md
-├── [ ] CONTRIBUTING.md
-├── [ ] LICENSE
+├── [x] CODE_OF_CONDUCT.md
+├── [x] CONTRIBUTING.md
+├── [x] LICENSE
 ├── [ ] README.md
 ├── assets
 │   └── images
-│       ├── [ ] llama2_loss_curves.png
-│       ├── [ ] llama3_1_405B_loss_curves.png
-│       ├── [ ] llama3_loss_curves.png
-│       ├── [ ] readme.md
-│       └── [ ] titan_play_video.png
+│       ├── [x] llama2_loss_curves.png
+│       ├── [x] llama3_1_405B_loss_curves.png
+│       ├── [x] llama3_loss_curves.png
+│       ├── [x] readme.md
+│       └── [x] titan_play_video.png
 ├── [ ] create_seed_checkpoint.sh
-├── [ ] dev-requirements.txt -> .ci/docker/dev-requirements.txt
+├── [x] dev-requirements.txt -> .ci/docker/dev-requirements.txt
 ├── docs
 │   ├── [ ] checkpoint.md
 │   ├── [ ] composability.md
@@ -121,7 +121,7 @@ Arg info:
 - `--job.config_file ${CONFIG_FILE}`: config file.
 - `$overrides`: additional overrides.
 
-### `train.py`
+### `train.py` notes:
 
 Main training file for `torchtitan`.
 
@@ -140,3 +140,139 @@ Notes:
   - model configuration options
   - Float8
   - checkpointing
+
+### Parallelization techniques:
+
+- DDP:
+  - data parallel
+
+### Model notes:
+
+- Use `@dataclass` for model config
+- Use `@classmethod` for `from_model_args`
+- Modular norms: I assume this is because of possible data parallelism?
+- TODO:
+  - learn rotary embeddings
+
+### Dataset
+
+- Dataset and dataloaders are "stateful"
+  - Stateful datasets are shared between threads and the datasets themselves generate batches
+
+### Parallelism:
+
+- Uses a `ParallelDims` dataclass to validate and configure parallelization
+  - Initializes the "device mesh"
+
+### Training config:
+
+```
+# torchtitan Config.toml
+
+[job]
+dump_folder = "./outputs" # dumps job outputs
+description = "Llama 3 debug training"
+use_for_integration_test = true # only to add to integ test suite
+
+[profiling]
+enable_profiling = true # to use profiling or not
+save_traces_folder = "profile_trace"
+profile_freq = 10
+enable_memory_snapshot = false
+save_memory_snapshot_folder = "memory_snapshot"
+
+[metrics]
+log_freq = 1 # how often to log to tensorboard
+enable_color_printing = true
+enable_tensorboard = true
+save_tb_folder = "tb"
+
+[model]
+name = "llama3"
+flavor = "debugmodel" # what model config to use, e.g. big/small
+norm_type = "rmsnorm"  # layernorm / np_layernorm / rmsnorm / fused_rmsnorm
+# test tokenizer.model, for debug purpose only
+tokenizer_path = "./test/assets/test_tiktoken.model"
+
+[optimizer]
+name = "AdamW"
+lr = 8e-4
+
+[training]
+batch_size = 8
+seq_len = 2048
+warmup_steps = 2  # lr scheduler warm up, normally 20% of the train steps
+max_norm = 1.0  # grad norm clipping
+steps = 10
+# DP degree, disabled at 1, weights are replicated across this many degrees, if shard_deg >1 HSDP, else DDP
+data_parallel_replicate_degree = 1
+data_parallel_shard_degree = -1 # when >1, weights are sharded across this many degrees. if dp_rep >1 HSDP, else FSDP
+tensor_parallel_degree = 1
+compile = false
+dataset = "c4_test"  # supported datasets: c4_test (2K), c4 (177M)
+
+[experimental]
+pipeline_parallel_degree = 1
+enable_async_tensor_parallel = false
+
+[checkpoint]
+enable_checkpoint = false
+folder = "checkpoint"
+interval_type = "steps"
+interval = 5
+model_weights_only = false
+export_dtype = "float32"
+async_mode = "disabled"  # ["disabled", "async", "async_with_pinned_mem"]
+
+[activation_checkpoint]
+mode = 'selective'  # ['none', 'selective', 'full']
+selective_ac_option = '2'  # 'int' = ac every positive int layer or 'op', ac based on ops policy
+
+[float8]
+enable_float8_linear = false```
+
+## log dumps:
+
+### llama2 7b no compile, batch size 4
+
+- uses FSDP2
+
+```
+[rank0]:2024-10-03 15:01:18,520 - root - INFO - step: 117  loss:  3.9053  memory: 36.20GiB(81.50%)  wps: 1,710  mfu: 23.50%
+[rank0]:2024-10-03 15:01:23,311 - root - INFO - step: 118  loss:  3.9014  memory: 36.20GiB(81.50%)  wps: 1,710  mfu: 23.50%
+[rank0]:2024-10-03 15:01:28,097 - root - INFO - step: 119  loss:  3.7841  memory: 36.20GiB(81.50%)  wps: 1,712  mfu: 23.52%
+[rank0]:2024-10-03 15:01:32,876 - root - INFO - step: 120  loss:  3.9687  memory: 36.20GiB(81.50%)  wps: 1,715  mfu: 23.56%
+[rank0]:2024-10-03 15:01:37,675 - root - INFO - step: 121  loss:  3.9105  memory: 36.20GiB(81.50%)  wps: 1,708  mfu: 23.46%
+[rank0]:2024-10-03 15:01:42,463 - root - INFO - step: 122  loss:  3.7040  memory: 36.20GiB(81.50%)  wps: 1,712  mfu: 23.52%
+[rank0]:2024-10-03 15:01:47,265 - root - INFO - step: 123  loss:  3.7633  memory: 36.20GiB(81.50%)  wps: 1,707  mfu: 23.45%
+[rank0]:2024-10-03 15:01:52,045 - root - INFO - step: 124  loss:  3.7565  memory: 36.20GiB(81.50%)  wps: 1,714  mfu: 23.55%
+[rank0]:2024-10-03 15:01:56,839 - root - INFO - step: 125  loss:  3.7816  memory: 36.20GiB(81.50%)  wps: 1,710  mfu: 23.49%
+[rank0]:2024-10-03 15:02:01,631 - root - INFO - step: 126  loss:  3.7840  memory: 36.20GiB(81.50%)  wps: 1,710  mfu: 23.50%
+[rank0]:2024-10-03 15:02:06,441 - root - INFO - step: 127  loss:  3.7705  memory: 36.20GiB(81.50%)  wps: 1,703  mfu: 23.40%
+[rank0]:2024-10-03 15:02:11,234 - root - INFO - step: 128  loss:  3.7049  memory: 36.20GiB(81.50%)  wps: 1,710  mfu: 23.49%
+[rank0]:2024-10-03 15:02:16,070 - root - INFO - step: 129  loss:  3.6569  memory: 36.20GiB(81.50%)  wps: 1,694  mfu: 23.28%
+[rank0]:2024-10-03 15:02:20,869 - root - INFO - step: 130  loss:  3.5210  memory: 36.20GiB(81.50%)  wps: 1,707  mfu: 23.46%```
+
+### llama2 7b with compile, batch size 4
+
+- same as above, but with compile
+- broke lol
+  - `.Please create a symlink of libcuda.so to any of the files.`
+  - there was a lot of issues i had to do fix
+    - uninstalling triton
+    - `export TRITON_LIBCUDA_PATH=/usr/local/cuda/compat/lib/libcuda.so`
+- roughly 17% higher wps
+
+```
+[rank0]:2024-10-03 16:44:28,481 - root - INFO - step:  1  loss: 10.8235  memory: 26.73GiB(60.17%)  wps: 1,176  mfu: 16.15%
+[rank0]:2024-10-03 16:44:32,658 - root - INFO - step:  2  loss: 10.6590  memory: 33.11GiB(74.54%)  wps: 1,962  mfu: 26.95%
+[rank0]:2024-10-03 16:44:36,851 - root - INFO - step:  3  loss: 10.3083  memory: 33.11GiB(74.54%)  wps: 1,954  mfu: 26.85%
+[rank0]:2024-10-03 16:44:41,065 - root - INFO - step:  4  loss:  9.9934  memory: 33.11GiB(74.54%)  wps: 1,944  mfu: 26.71%
+[rank0]:2024-10-03 16:44:45,256 - root - INFO - step:  5  loss:  9.5579  memory: 33.11GiB(74.54%)  wps: 1,956  mfu: 26.87%
+[rank0]:2024-10-03 16:44:49,442 - root - INFO - step:  6  loss:  9.4216  memory: 33.11GiB(74.54%)  wps: 1,957  mfu: 26.89%
+[rank0]:2024-10-03 16:44:53,645 - root - INFO - step:  7  loss:  9.0326  memory: 33.11GiB(74.54%)  wps: 1,950  mfu: 26.79%
+[rank0]:2024-10-03 16:44:57,844 - root - INFO - step:  8  loss:  8.9617  memory: 33.11GiB(74.54%)  wps: 1,952  mfu: 26.82%
+[rank0]:2024-10-03 16:45:02,050 - root - INFO - step:  9  loss:  8.9453  memory: 33.11GiB(74.54%)  wps: 1,948  mfu: 26.77%
+[rank0]:2024-10-03 16:45:06,242 - root - INFO - step: 10  loss:  8.7203  memory: 33.11GiB(74.54%)  wps: 1,955  mfu: 26.86%```
+
+
