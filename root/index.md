@@ -6,7 +6,7 @@ title: Carter Swartout
 
 <img src="../static/me.jpeg" alt="photo of myself" class="small-img">
         
-I'm a CS undergraduate in my final quarter at the University of Washington. I'm passionate about using technology to create a better world. I'm also the proud older brother of two amazing siblings!
+I'm a CS undergraduate in my final quarter at the University of Washington, passionate about using technology to create a better world. I'm also the proud older brother of two amazing siblings!
 
 I'm joining Palantir as a SDE in Feburary!
 
