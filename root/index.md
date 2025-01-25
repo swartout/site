@@ -6,13 +6,7 @@ title: Carter Swartout
 
 <img src="../static/me.jpeg" alt="photo of myself" class="small-img">
         
-I'm a CS undergraduate in my final quarter at the University of Washington, passionate about using technology to create a better world. I'm also the proud older brother of two amazing siblings!
+I'm a software engineer at Palantir, having dropped out CS at the University of Washington. I'm passionate about using technology to create a world we want to live in. I'm also the proud older brother of two amazing siblings!
 
-I'm joining Palantir as a SDE in Feburary!
-
-I'm interning with UW HYAK (HPC) through Fall 2024!
-
-I interned at the newly-launched AWS PCS in Summer 2024!
-
-Please get in touch with me at **swartout**[at]**uw**[dot]**edu** if you'd like
+Please get in touch with me at **carterswartout**[at]**gmail**[dot]**com** if you'd like
 to chat!
